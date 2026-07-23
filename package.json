@@ -1,8 +1,10 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/serdarsabreder/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/serdarsabreder/frontend-project-46/actions)",
-  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "gendiff": "./bin/gendiff.js"
+  },
   "scripts": {
     "test": "jest",
     "lint": "eslint ."
@@ -14,7 +16,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/serdarsabreder/frontend-project-46/issues"
   },
@@ -30,3 +31,4 @@
     "jest": "^30.4.2"
   }
 }
+
