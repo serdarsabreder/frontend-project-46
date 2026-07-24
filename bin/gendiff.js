@@ -10,7 +10,8 @@ program
   .argument('<filepath2>', 'Second file path')
   .option('-f, --format [type]', 'Output format (stylish, plain, json)')
   .action((filepath1, filepath2, options) => {
-    const result = genDiff(filepath1, filepath2, options.format);
+    // На этом шаге игнорируем format, делаем только базовый стиль (как в примере)
+    const result = genDiff(filepath1, filepath2);
     console.log(result);
   })
   .parse();
