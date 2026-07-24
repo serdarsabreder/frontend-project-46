@@ -13,7 +13,6 @@ const parseFile = (filePath) => {
     return JSON.parse(content);
   }
   if (ext === '.yaml' || ext === '.yml') {
-    // Для шага 5 пока можно оставить, но основное требование — плоские JSON
     throw new Error('YAML support will be added in later steps');
   }
 
@@ -26,37 +25,35 @@ const genDiff = (filepath1, filepath2) => {
 
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
-  // _.union не мутирует, возвращает новый массив
   const allKeys = _.union(keys1, keys2).sort();
 
   const lines = allKeys.map((key) => {
-    const inFirst = key in obj1;
-    const inSecond = key in obj2;
+    const hasInFirst = Object.prototype.hasOwnProperty.call(obj1, key);
+    const hasInSecond = Object.prototype.hasOwnProperty.call(obj2, key);
 
-    if (!inFirst && inSecond) {
-      // Добавлено
+    // Если ключа нет в первом файле, но есть во втором → добавлен
+    if (!hasInFirst && hasInSecond) {
       return `+ ${key}: ${obj2[key]}`;
     }
 
-    if (inFirst && !inSecond) {
-      // Удалено
+    // Если ключ есть только в первом → удалён
+    if (hasInFirst && !hasInSecond) {
       return `- ${key}: ${obj1[key]}`;
     }
 
-    // Есть в обоих: сравниваем значения
-    if (obj1[key] !== obj2[key]) {
-      // Изменено: сначала строка из первого файла, потом из второго (как в задании)
-      return [
-        `- ${key}: ${obj1[key]}`,
-        `+ ${key}: ${obj2[key]}`,
-      ];
+    // Ключ есть в обоих: сравниваем значения
+    if (obj1[key] === obj2[key]) {
+      // Значения совпадают → просто ключ: значение, без знаков
+      return `${key}: ${obj1[key]}`;
     }
 
-    // Не изменилось
-    return `${key}: ${obj1[key]}`;
+    // Значения разные → сначала старое, потом новое
+    return [
+      `- ${key}: ${obj1[key]}`,
+      `+ ${key}: ${obj2[key]}`,
+    ];
   });
 
-  // flat() нужен, потому что изменённые ключи возвращают массив из 2 строк
   return lines.flat().join('\n');
 };
 
