@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Difference Calculator - compares two JSON/YAML files and shows differences",
+  "main": "index.js",
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
