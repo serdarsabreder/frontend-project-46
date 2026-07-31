@@ -32,14 +32,14 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v5
         env:
-          # Секреты (обязательно должны быть в GitHub Settings)
+          # Секреты (должны быть в GitHub Settings)
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
-          # ⚠️ ГЛАВНОЕ: Передаем ключи прямо в аргументы сканера
+          # Передаем настройки напрямую в сканер через args
           args: >-
             -Dsonar.projectKey=hexlet-code-serdarsabreder-frontend-project-46
-            -Dsonar.organization=serdarsabreder
+            -Dsonar.organization=hexlet-code
             -Dsonar.projectName="Gendiff Project"
             -Dsonar.sources=src
             -Dsonar.tests=__tests__
