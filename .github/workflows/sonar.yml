@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Обязательно: полный git-лог
+          fetch-depth: 0  # Обязательно для истории коммитов
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,21 +32,18 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v5
         env:
-          # ⚠️ ГЛАВНОЕ ИЗМЕНЕНИЕ: Все параметры теперь тут, с префиксом SONAR_
+          # Критические секреты (должны быть в GitHub Settings)
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           
-          # Эти строки решают твою ошибку!
+          # Настройки проекта (читаются ТОЛЬКО отсюда, если нет sonar-project.properties)
           SONAR_PROJECT_KEY: hexlet-code-serdarsabreder-frontend-project-46
           SONAR_ORGANIZATION: serdarsabreder
           SONAR_PROJECT_NAME: "Gendiff Project"
           
-          # Настройки путей
+          # Пути к коду и тестам
           SONAR_SOURCES: src
           SONAR_TESTS: __tests__
           SONAR_JAVASCRIPT_LCOV_REPORT_PATHS: coverage/lcov.info
           SONAR_LANGUAGE: js
-        with:
-          # В этой версии экшена блок 'with' почти не нужен, можно оставить пустым или удалить
-          args: '' 
 
