@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Обязательно: Sonar нужен полный git-лог
+          fetch-depth: 0  # Критически важно для Sonar
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -26,18 +26,18 @@ jobs:
         run: npm ci
 
       - name: Run tests with coverage
-        # Генерирует файл coverage/lcov.info, который нужен Sonar
+        # Создает файл coverage/lcov.info
         run: npx jest --coverage --coverageProvider=v8
 
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v6
+        # Используем стабильную v5 вместо v6, чтобы избежать ошибок поиска
+        uses: sonarsource/sonarcloud-github-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
-          # ⚠️ ВСТАВЬ СЮДА СВОЙ ПОЛНЫЙ PROJECT KEY!
-          # Формат: hexlet-code-<ТВОЙ_НИК>-frontend-project-46
-          projectKey: hexlet-code-serdarsabreder-frontend-project-46 
+          # ⚠️ ВСТАВЬ СЮДА СВОЙ ТОЧНЫЙ PROJECT KEY (из настроек SonarCloud)
+          projectKey: hexlet-code-serdarsabreder-frontend-project-46
           
           projectName: "Gendiff Project"
           extraProperties: |
@@ -45,4 +45,3 @@ jobs:
             sonar.tests=__tests__
             sonar.javascript.lcov.reportPaths=coverage/lcov.info
             sonar.language=js
-
