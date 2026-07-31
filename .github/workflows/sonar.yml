@@ -34,13 +34,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
+          # ВАЖНО: Никаких комментариев внутри этого блока! Только флаги.
           args: >-
-            # Твой РЕАЛЬНЫЙ ключ проекта (из ссылки, которую ты прислал!)
             -Dsonar.projectKey=serdarsabreder_frontend-project-46
-            
-            # Твоя организация (твой ник, так как проект в личном профиле)
             -Dsonar.organization=serdarsabreder
-            
             -Dsonar.projectName="Gendiff Project"
             -Dsonar.sources=src
             -Dsonar.tests=__tests__
