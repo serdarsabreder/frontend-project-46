@@ -6,8 +6,8 @@ import genDiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
-const readFixture = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8').trim();
+const getFixturePath = (...parts) => path.join(__dirname, '..', '__fixtures__', ...parts);
+const readFixture = (...parts) => fs.readFileSync(getFixturePath(...parts), 'utf-8').trim();
 
 describe('genDiff', () => {
   test('stylish format with JSON files', () => {
@@ -37,6 +37,15 @@ describe('genDiff', () => {
   test('mixed file formats', () => {
     const result = genDiff(getFixturePath('file1.json'), getFixturePath('file2.yml'));
     const expected = readFixture('expectedStylish.txt');
+    expect(result).toBe(expected);
+  });
+
+  test('flat JSON files', () => {
+    const result = genDiff(
+      getFixturePath('step3', 'file1.json'),
+      getFixturePath('step3', 'file2.json'),
+    );
+    const expected = readFixture('step3', 'expected.txt');
     expect(result).toBe(expected);
   });
 });
