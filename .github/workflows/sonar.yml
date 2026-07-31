@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Обязательно для истории коммитов
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -26,20 +26,21 @@ jobs:
         run: npm ci
 
       - name: Run tests with coverage
-        # Генерирует coverage/lcov.info
         run: npx jest --coverage --coverageProvider=v8
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v5
         env:
-          # Секреты (должны быть в GitHub Settings)
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
-          # Передаем настройки напрямую в сканер через args
           args: >-
-            -Dsonar.projectKey=hexlet-code-serdarsabreder-frontend-project-46
-            -Dsonar.organization=hexlet-code
+            # Твой РЕАЛЬНЫЙ ключ проекта (из ссылки, которую ты прислал!)
+            -Dsonar.projectKey=serdarsabreder_frontend-project-46
+            
+            # Твоя организация (твой ник, так как проект в личном профиле)
+            -Dsonar.organization=serdarsabreder
+            
             -Dsonar.projectName="Gendiff Project"
             -Dsonar.sources=src
             -Dsonar.tests=__tests__
