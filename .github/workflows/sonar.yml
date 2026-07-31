@@ -1,0 +1,48 @@
+name: SonarQube Scan
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  sonar:
+    name: SonarCloud Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Обязательно: Sonar нужен полный git-лог
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        # Генерирует файл coverage/lcov.info, который нужен Sonar
+        run: npx jest --coverage --coverageProvider=v8
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          # ⚠️ ВСТАВЬ СЮДА СВОЙ ПОЛНЫЙ PROJECT KEY!
+          # Формат: hexlet-code-<ТВОЙ_НИК>-frontend-project-46
+          projectKey: hexlet-code-serdarsabreder-frontend-project-46 
+          
+          projectName: "Gendiff Project"
+          extraProperties: |
+            sonar.sources=src
+            sonar.tests=__tests__
+            sonar.javascript.lcov.reportPaths=coverage/lcov.info
+            sonar.language=js
+
