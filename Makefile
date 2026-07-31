@@ -7,7 +7,13 @@ gendiff:
 test:
 	npm test
 
+test-coverage:
+	npm run test:coverage
+
 lint:
 	npx eslint .
 
-.PHONY: test lint
+fix:
+	npx eslint --fix .
+
+.PHONY: test test-coverage lint fix
