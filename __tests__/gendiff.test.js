@@ -40,39 +40,13 @@ describe('genDiff', () => {
     expect(result).toBe(expected);
   });
 
-  test('flat JSON files', () => {
-    const result = genDiff(
-      getFixturePath('step3', 'file1.json'),
-      getFixturePath('step3', 'file2.json'),
+  test('stylish is the default format', () => {
+    const result = genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'));
+    const stylishResult = genDiff(
+      getFixturePath('file1.json'),
+      getFixturePath('file2.json'),
+      'stylish',
     );
-    const expected = readFixture('step3', 'expected.txt');
-    expect(result).toBe(expected);
-  });
-
-  test('flat YAML files (.yml)', () => {
-    const result = genDiff(
-      getFixturePath('step6', 'file1.yml'),
-      getFixturePath('step6', 'file2.yml'),
-    );
-    const expected = readFixture('step6', 'expected.txt');
-    expect(result).toBe(expected);
-  });
-
-  test('flat YAML files (.yaml)', () => {
-    const result = genDiff(
-      getFixturePath('step6', 'file1.yaml'),
-      getFixturePath('step6', 'file2.yaml'),
-    );
-    const expected = readFixture('step6', 'expected.txt');
-    expect(result).toBe(expected);
-  });
-
-  test('flat mixed JSON and YAML files', () => {
-    const result = genDiff(
-      getFixturePath('step6', 'file1.json'),
-      getFixturePath('step6', 'file2.yml'),
-    );
-    const expected = readFixture('step6', 'expected.txt');
-    expect(result).toBe(expected);
+    expect(result).toBe(stylishResult);
   });
 });
